@@ -1,68 +1,68 @@
-\# Detection Analysis – Wazuh HIDS
+# Detection Analysis – Wazuh SSH Brute Force Alert
 
+## 📊 Overview
+Setelah simulasi SSH brute force dijalankan,
+Wazuh Agent berhasil mendeteksi aktivitas mencurigakan
+berdasarkan log autentikasi pada server target.
 
+Deteksi ini bersifat **host-based detection**,
+di mana analisis dilakukan dari sisi endpoint, bukan traffic jaringan.
 
-\## Detection Method
+---
 
-Deteksi dilakukan secara host-based melalui analisis log sistem,
+## 🧾 Log Source
+Deteksi berasal dari log berikut:
 
-bukan melalui inspeksi traffic jaringan.
+- File log: `/var/log/auth.log`
+- Service: OpenSSH
+- Event utama:
+  - Failed password
+  - Authentication failure
+  - Repeated login attempts
 
+---
 
+## 🚨 Alert Behavior
 
-\## Log Source
+Selama simulasi berlangsung, Wazuh menghasilkan alert dengan karakteristik:
+- Multiple alert dalam waktu singkat
+- Source IP yang sama
+- Target user berbeda (atau user yang sama berulang)
 
-\- `/var/log/auth.log`
+Alert muncul setelah ambang batas percobaan login gagal tercapai.
 
-\- SSH authentication logs
+---
 
+## 🧠 Detection Logic
+Wazuh mendeteksi brute force berdasarkan:
+- Pola login gagal berulang
+- Frekuensi event yang tidak normal
+- Korelasi antar event autentikasi
 
+Ini menunjukkan bahwa Wazuh tidak hanya membaca satu log,
+tetapi melakukan **event correlation**.
 
-\## Detection Behavior
+---
 
-Wazuh Agent mendeteksi:
+## 📈 Severity & Risk
+Alert yang dihasilkan memiliki tingkat severity menengah hingga tinggi,
+karena:
+- Berpotensi menyebabkan credential compromise
+- Menunjukkan reconnaissance aktif terhadap service SSH
+- Umum digunakan sebagai tahap awal serangan lanjutan
 
-\- Multiple failed SSH login attempts
+---
 
-\- Authentication failure patterns
+## 🧩 Analysis Insight
+Beberapa insight penting:
+- Serangan tidak memerlukan exploit untuk terdeteksi
+- Log autentikasi sudah cukup kuat sebagai indikator
+- Monitoring SSH adalah kontrol keamanan dasar yang krusial
 
-\- Repeated login attempts from the same source
+---
 
-
-
-\## Alert Characteristics
-
-\- Alert severity: medium
-
-\- Triggered by rule-based detection
-
-\- Fokus pada authentication abuse
-
-
-
-\## Analysis Result
-
-\- Serangan berhasil terdeteksi di sisi host
-
-\- Tidak diperlukan visibility network traffic
-
-\- Efektif untuk mendeteksi brute force berbasis credential
-
-
-
-\## Limitation
-
-\- Tidak menampilkan detail payload jaringan
-
-\- Tidak mendeteksi scanning sebelum login attempt
-
-
-
-\## Conclusion
-
-Wazuh efektif sebagai HIDS untuk mendeteksi serangan brute force SSH,
-
-namun akan lebih optimal jika dikombinasikan dengan NIDS seperti Suricata.
-
-
-
+## 📌 Conclusion
+Wazuh terbukti efektif dalam:
+- Mendeteksi serangan berbasis kredensial
+- Memberikan visibilitas aktivitas mencurigakan di host
+- Membantu analyst memahami timeline serangan
