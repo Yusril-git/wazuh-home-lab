@@ -1,94 +1,27 @@
-\# Lab Topology
+# Lab Topology
 
+## 🎯 Objective
+Membangun Home Lab untuk mensimulasikan dan menganalisis deteksi serangan
+SSH brute force menggunakan Wazuh (Host-based IDS).
 
+## 🧱 Environment
 
-\## Overview
+### Attacker
+- OS: Kali Linux
+- Tool: Nmap (NSE ssh-brute)
 
-Home lab ini dibuat untuk mensimulasikan skenario serangan dan deteksi keamanan berbasis host
+### Target
+- OS: Ubuntu Server
+- Service: OpenSSH
+- Security Agent: Wazuh Agent
 
-menggunakan Wazuh sebagai HIDS (Host-based Intrusion Detection System).
+### Monitoring
+- Wazuh Manager + Dashboard
 
+## 🌐 Network Topology
+- Attacker dan Target berada dalam satu jaringan internal (NAT / Host-only)
+- Serangan dilakukan langsung ke port 22/tcp
 
-
-Lab terdiri dari satu attacker machine dan satu target server yang dimonitor oleh Wazuh Agent.
-
-
-
-\## Topology Diagram (Logical)
-
-
-
-Attacker (Kali Linux)
-
-&nbsp;       |
-
-&nbsp;       |  SSH Brute Force
-
-&nbsp;       |
-
-Target (Ubuntu Server)
-
-&nbsp;       |
-
-&nbsp;       |  Log Monitoring
-
-&nbsp;       |
-
-Wazuh Agent → Wazuh Manager
-
-
-
-\## Environment Detail
-
-
-
-\### Attacker Machine
-
-\- OS: Kali Linux
-
-\- Role: Offensive simulation
-
-\- Tools:
-
-&nbsp; - Nmap
-
-&nbsp; - NSE script: ssh-brute
-
-
-
-\### Target Machine
-
-\- OS: Ubuntu Server
-
-\- Services:
-
-&nbsp; - OpenSSH (port 22)
-
-\- Security Agent:
-
-&nbsp; - Wazuh Agent
-
-
-
-\### Detection Platform
-
-\- Wazuh Manager
-
-\- Function:
-
-&nbsp; - Log analysis
-
-&nbsp; - Alert generation
-
-&nbsp; - Rule-based detection
-
-
-
-\## Network Type
-
-\- Internal / Home Lab Network
-
-\- No exposure to public internet
-
-
-
+## 🧩 Notes
+Topologi ini merepresentasikan skenario dasar yang umum
+ditemukan pada lingkungan internal server.
