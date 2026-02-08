@@ -46,9 +46,21 @@ Beberapa insight yang diperoleh:
 
 wazuh-home-lab/
 │── README.md
-│── docs/
-│── screenshots/
-│── logs/
+│
+├── docs/
+│   ├── lab-topology.md
+│   ├── attack-scenario.md
+│   ├── detection-analysis.md
+│
+├── screenshots/
+│   ├── attack/
+│   ├── wazuh-alerts/
+│
+├── logs/
+│   ├── auth.log
+│   ├── wazuh-alerts.json
+│
+└── .gitignore
 
 
 ---
