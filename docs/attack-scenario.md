@@ -1,46 +1,64 @@
-\# SSH Brute Force Attack Scenario
+\# Attack Scenario – SSH Brute Force
 
 
 
 \## Objective
 
-Mensimulasikan serangan SSH brute force untuk menguji kemampuan Wazuh Agent dalam mendeteksi percobaan login berulang.
+Mensimulasikan serangan SSH brute force untuk mengamati bagaimana aktivitas login gagal
+
+terekam pada sisi host dan dideteksi oleh Wazuh Agent.
 
 
 
-\## Attacker
+\## Attack Type
 
-\- Kali Linux
+\- Credential-based attack
 
-\- Nmap NSE: ssh-brute
-
-
-
-\## Target
-
-\- Ubuntu Server
-
-\- OpenSSH
-
-\- Wazuh Agent
+\- SSH brute force
 
 
 
-\## Steps
+\## Tools Used
 
-1\. Scanning port 22
+\- Nmap
 
-2\. Eksekusi brute force
-
-3\. Generasi failed authentication logs
+\- NSE Script: ssh-brute
 
 
 
-\## Expected Result
+\## Attack Flow
 
-\- Multiple authentication failure logs
 
-\- Wazuh alert triggered
+
+1\. Attacker melakukan scanning terhadap target
+
+2\. Ditemukan port 22 (SSH) dalam kondisi open
+
+3\. Attacker menjalankan brute force menggunakan wordlist
+
+4\. Target menghasilkan multiple failed login attempts
+
+5\. Log authentication tercatat pada sistem
+
+
+
+\## Indicators Generated
+
+\- Repeated failed SSH login attempts
+
+\- Invalid user authentication
+
+\- Authentication failure logs
+
+
+
+\## Purpose of Simulation
+
+\- Melatih pemahaman log-based detection
+
+\- Memahami pola serangan brute force
+
+\- Melihat keterbatasan host-based detection
 
 
 
