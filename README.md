@@ -68,5 +68,11 @@ Melalui project ini saya belajar bahwa:
 
 ---
 
+## 📄 Documentation
+- [Lab Topology](docs/lab-topology.md)
+- [Attack Scenario](docs/attack-scenario.md)
+- [Detection Analysis](docs/detection-analysis.md)
+
+
 📢 Project ini dibuat sebagai bagian dari pembelajaran dan dokumentasi personal di bidang **Cybersecurity & SOC Analysis**.
 >>>>>>> e4a42bc (initial Wazuh home lab: SSH brute force detection)
