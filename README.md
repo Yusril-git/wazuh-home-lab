@@ -1,90 +1,65 @@
-HEAD
-# wazuh-home-lab
-Wazuh + Suricata home lab attack &amp; detection simulation
-# Wazuh Home Lab – SSH Brute Force Detection
+# 🛡️ Wazuh Home Lab – SSH Brute Force Detection
 
-## 📌 Overview
-Project ini merupakan simulasi keamanan di Home Lab untuk menguji kemampuan **Wazuh (HIDS)** dalam mendeteksi aktivitas serangan, khususnya **SSH brute force attack**.
+## 📌 Deskripsi
+Proyek ini merupakan simulasi **home lab keamanan** menggunakan **Wazuh**  
+untuk mendeteksi serangan **SSH brute force** pada server Linux.
 
-Simulasi dilakukan dari sisi attacker menggunakan Kali Linux, sementara target menggunakan Ubuntu Server dengan Wazuh Agent terpasang.
-
----
-
-## 🧪 Attack Scenario
-Serangan yang disimulasikan pada project ini:
-
-- SSH brute force menggunakan **Nmap NSE (ssh-brute)**
-- Target port: **22/tcp**
-- Tujuan: mengamati perbedaan visibilitas log dan alert pada sisi host
+Lab ini dirancang untuk menunjukkan bagaimana serangan berbasis kredensial
+dapat terdeteksi melalui **host-based intrusion detection**.
 
 ---
 
-## 🔍 Detection Result
-Beberapa insight yang diperoleh:
+## 🧱 Arsitektur Lab
 
-- Aktivitas brute force **terdeteksi oleh Wazuh Agent**
-- Alert muncul berdasarkan:
-  - Multiple failed SSH login attempts
-  - Authentication failure logs
-- Deteksi bersifat **host-based**, bukan network-based
+| VM | Peran | OS |
+|----|------|----|
+| VM 1 | Wazuh Manager | Ubuntu |
+| VM 2 | Attacker | Kali Linux |
+| VM 3 | Target + Wazuh Agent | Ubuntu Server |
 
 ---
 
-## 🛠️ Tools & Environment
-**Attacker:**
+## 🔍 Skenario Serangan
+1. Attacker melakukan scanning service menggunakan Nmap
+2. Ditemukan service SSH terbuka
+3. Attacker menjalankan SSH brute force
+4. Target mencatat kegagalan login pada `auth.log`
+5. Wazuh Agent mengirim event ke Manager
+6. Alert muncul di dashboard Wazuh
+
+---
+
+## ⚔️ Simulasi Attacker
+
+### Nmap Version Scanning
+![Nmap Version Scan](screenshots/01-attacker/01-nmap-version-scan.png)
+
+### SSH Brute Force
+![SSH Brute Force](screenshots/01-attacker/02-ssh-bruteforce.png)
+
+---
+
+## 🚨 Detection & Alert
+Wazuh mendeteksi:
+- Multiple SSH login failure
+- Attempt login menggunakan user tidak valid
+- Korelasi event autentikasi
+
+Detail analisis dapat dilihat di:
+📄 [`docs/detection-analysis.md`](docs/detection-analysis.md)
+
+---
+
+## 🧠 Kesimpulan
+- SSH brute force dapat terdeteksi tanpa exploit
+- Log autentikasi merupakan indikator penting
+- Wazuh efektif untuk monitoring endpoint
+
+---
+
+## 🛠️ Tools
+- Wazuh
+- Nmap
+- OpenSSH
 - Kali Linux
-- Nmap + NSE ssh-brute script
-
-**Defender:**
 - Ubuntu Server
-- Wazuh Agent
-- OpenSSH Server
-
----
-
-## 📂 Repository Structure
-
-wazuh-home-lab/
-│── README.md
-│
-├── docs/
-│   ├── lab-topology.md
-│   ├── attack-scenario.md
-│   ├── detection-analysis.md
-│
-├── screenshots/
-│   ├── attack/
-│   ├── wazuh-alerts/
-│
-├── logs/
-│   ├── auth.log
-│   ├── wazuh-alerts.json
-│
-└── .gitignore
-
-
----
-
-## 🎯 Learning Outcome
-Melalui project ini saya belajar bahwa:
-- Brute force attack memiliki jejak log yang jelas di sisi host
-- Monitoring authentication log sangat penting untuk SOC Analyst
-- Wazuh efektif untuk mendeteksi serangan berbasis credential abuse
-
----
-
-## 🚀 Next Plan
-- Menambahkan simulasi **network-based detection**
-- Integrasi dengan **Suricata**
-- Analisis perbedaan alert HIDS vs NIDS
-
----
-
-## 📄 Documentation
-- [Lab Topology](docs/lab-topology.md)
-- [Attack Scenario](docs/attack-scenario.md)
-- [Detection Analysis](docs/detection-analysis.md)
-
-
-📢 Project ini dibuat sebagai bagian dari pembelajaran dan dokumentasi personal di bidang **Cybersecurity & SOC Analysis**.
->>>>>>> e4a42bc (initial Wazuh home lab: SSH brute force detection)
