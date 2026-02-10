@@ -1,68 +1,88 @@
 # Detection Analysis – Wazuh SSH Brute Force Alert
 
 ## 📊 Overview
-Setelah simulasi SSH brute force dijalankan,
+Setelah simulasi serangan **SSH brute force** dijalankan,
 Wazuh Agent berhasil mendeteksi aktivitas mencurigakan
 berdasarkan log autentikasi pada server target.
 
 Deteksi ini bersifat **host-based detection**,
-di mana analisis dilakukan dari sisi endpoint, bukan traffic jaringan.
+di mana analisis dilakukan dari sisi endpoint (server),
+bukan dari pemantauan lalu lintas jaringan.
 
 ---
 
 ## 🧾 Log Source
-Deteksi berasal dari log berikut:
+Deteksi berasal dari sumber log berikut:
 
 - File log: `/var/log/auth.log`
 - Service: OpenSSH
-- Event utama:
+- Jenis event:
   - Failed password
-  - Authentication failure
-  - Repeated login attempts
+  - PAM authentication failure
+  - Percobaan login berulang dalam waktu singkat
 
 ---
 
-## 🚨 Alert Behavior
-
+## 🚨 Perilaku Alert
 Selama simulasi berlangsung, Wazuh menghasilkan alert dengan karakteristik:
-- Multiple alert dalam waktu singkat
-- Source IP yang sama
-- Target user berbeda (atau user yang sama berulang)
 
-Alert muncul setelah ambang batas percobaan login gagal tercapai.
+- Banyak alert muncul dalam waktu singkat
+- Berasal dari **satu IP source yang sama**
+- Menargetkan user yang berbeda atau user yang sama secara berulang
 
----
-
-## 🧠 Detection Logic
-Wazuh mendeteksi brute force berdasarkan:
-- Pola login gagal berulang
-- Frekuensi event yang tidak normal
-- Korelasi antar event autentikasi
-
-Ini menunjukkan bahwa Wazuh tidak hanya membaca satu log,
-tetapi melakukan **event correlation**.
+Alert dipicu setelah jumlah percobaan login gagal melewati ambang batas yang ditentukan oleh rule Wazuh.
 
 ---
 
-## 📈 Severity & Risk
-Alert yang dihasilkan memiliki tingkat severity menengah hingga tinggi,
-karena:
-- Berpotensi menyebabkan credential compromise
-- Menunjukkan reconnaissance aktif terhadap service SSH
-- Umum digunakan sebagai tahap awal serangan lanjutan
+## 🧠 Logika Deteksi
+Wazuh mendeteksi aktivitas brute force berdasarkan:
+
+- Pola login gagal yang berulang
+- Frekuensi event autentikasi yang tidak normal
+- Korelasi antar event SSH dan PAM authentication
+
+Hal ini menunjukkan bahwa Wazuh tidak hanya membaca satu log,
+tetapi melakukan **korelasi event** untuk mengidentifikasi serangan.
 
 ---
 
-## 🧩 Analysis Insight
-Beberapa insight penting:
-- Serangan tidak memerlukan exploit untuk terdeteksi
-- Log autentikasi sudah cukup kuat sebagai indikator
-- Monitoring SSH adalah kontrol keamanan dasar yang krusial
+## 📈 Severity & Risiko
+Alert yang dihasilkan memiliki tingkat severity **menengah hingga tinggi** karena:
+
+- Berpotensi menyebabkan kompromi kredensial
+- Menunjukkan aktivitas reconnaissance terhadap service SSH
+- Umumnya digunakan sebagai tahap awal sebelum serangan lanjutan
 
 ---
 
-## 📌 Conclusion
-Wazuh terbukti efektif dalam:
-- Mendeteksi serangan berbasis kredensial
-- Memberikan visibilitas aktivitas mencurigakan di host
-- Membantu analyst memahami timeline serangan
+## 🧩 Insight Analisis
+Beberapa insight penting dari simulasi ini:
+
+- Serangan brute force tidak memerlukan exploit untuk terdeteksi
+- Log autentikasi sudah cukup kuat sebagai indikator serangan
+- Monitoring SSH merupakan kontrol keamanan dasar yang sangat krusial
+
+---
+
+## 📌 Kesimpulan
+Dari simulasi ini dapat disimpulkan bahwa Wazuh efektif dalam:
+
+- Mendeteksi serangan berbasis kredensial (SSH brute force)
+- Memberikan visibilitas aktivitas mencurigakan di sisi host
+- Membantu analis SOC memahami pola dan timeline serangan
+
+---
+
+## 🖥️ Hasil Deteksi Wazuh
+
+### Security Events
+Tampilan ini menunjukkan alert mentah (raw events) yang dihasilkan Wazuh
+berdasarkan kegagalan autentikasi SSH.
+
+![Wazuh Security Events](../screenshots/03-wazuh/03-wazuh-security-events-ssh-bruteforce.png)
+
+### Dashboard
+Dashboard memberikan gambaran tingkat tinggi dari perspektif SOC,
+menampilkan lonjakan authentication failure dan distribusi alert.
+
+![Wazuh Dashboard](../screenshots/03-wazuh/04-wazuh-authentication-failure-dashboard.png)
