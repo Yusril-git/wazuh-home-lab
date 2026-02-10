@@ -35,7 +35,7 @@ dapat terdeteksi melalui **host-based intrusion detection**.
 ![Nmap Version Scan](screenshots/01-attacker/01-nmap-version-scan.png)
 
 ### SSH Brute Force
-![SSH Brute Force](screenshots/01-attacker/02-ssh-bruteforce.png)
+![SSH Brute Force](screenshots/01-attacker/02-nmap-ssh-bruteforce.png)
 
 ---
 
